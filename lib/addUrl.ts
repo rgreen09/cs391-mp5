@@ -5,10 +5,6 @@ import { UrlEntry } from '@/types';
 
 async function checkUrlFormat(urlString: string): Promise<boolean> {
   try {
-    const parsedUrl = new URL(urlString);
-    if (parsedUrl.protocol !== 'http:' && parsedUrl.protocol !== 'https:') {
-      return false;
-    }
     const response = await fetch(urlString, { method: 'HEAD', signal: AbortSignal.timeout(5000) });
     return response.ok;
   } catch {
