@@ -45,14 +45,7 @@ export async function addUrl(
 
     await collection.insertOne(urlRecord);
 
-    let baseUrl: string;
-    if (process.env.NEXT_PUBLIC_BASE_URL) {
-      baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-    } else if (process.env.VERCEL_URL) {
-      baseUrl = `https://${process.env.VERCEL_URL}`;
-    } else {
-      baseUrl = 'http://localhost:3000';
-    }
+    const baseUrl = 'https://cs391-mp5-taupe.vercel.app';
     const shortUrl = `${baseUrl}/${alias}`;
 
     return {
