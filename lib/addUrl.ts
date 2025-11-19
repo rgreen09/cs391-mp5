@@ -3,10 +3,14 @@
 import { getDatabase } from '@/db';
 import { UrlEntry } from '@/types';
 
-function checkUrlFormat(urlString: string): boolean {
+async function checkUrlFormat(urlString: string): Promise<boolean> {
   try {
     const parsedUrl = new URL(urlString);
-    return parsedUrl.protocol === 'http:' || parsedUrl.protocol === 'https:';
+    if (parsedUrl.protocol !== 'http:' && parsedUrl.protocol !== 'https:') {
+      return false;
+    }
+    const response = await fetch(urlString, { method: 'HEAD', signal: AbortSignal.timeout(5000) });
+    return response.ok;
   } catch {
     return false;
   }
@@ -21,7 +25,7 @@ export async function addUrl(
       return { success: false, error: 'Both URL and alias must be provided' };
     }
 
-    if (!checkUrlFormat(url)) {
+    if (!(await checkUrlFormat(url))) {
       return { success: false, error: 'URL must be a valid http or https address' };
     }
 

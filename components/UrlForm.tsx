@@ -11,15 +11,6 @@ export default function UrlForm() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const checkUrlValidity = (urlString: string): boolean => {
-    try {
-      const parsedUrl = new URL(urlString);
-      return parsedUrl.protocol === 'http:' || parsedUrl.protocol === 'https:';
-    } catch {
-      return false;
-    }
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -27,11 +18,6 @@ export default function UrlForm() {
 
     if (!longUrl || !shortAlias) {
       setError('Both fields are required');
-      return;
-    }
-
-    if (!checkUrlValidity(longUrl)) {
-      setError('Please enter a valid URL starting with http:// or https://');
       return;
     }
 
